@@ -1,0 +1,20 @@
+run:
+  use_legacy_pipeline: false
+  native_mode: full
+parallel:
+  enabled: true
+  backend: process
+  workers: 8
+rate_limit:
+  backend: redis
+quality:
+  allow_degraded_export: false
+
+
+retry:
+  max_attempts: 3
+  backoff_seconds: 0.5
+  backoff_multiplier: 2.0
+  max_backoff_seconds: 5.0
+  retry_on_timeouts: true
+  retry_on_connection_errors: true

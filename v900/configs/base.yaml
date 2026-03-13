@@ -1,0 +1,21 @@
+run:
+  market: futures_um
+  freq: 1h
+  native_export_format: csv
+rate_limit:
+  backend: sqlite
+  max_per_min: 60
+quality:
+  max_na_ratio_critical: 0.15
+  min_rows: 2
+  min_label_classes: 2
+  allow_degraded_export: false
+
+
+retry:
+  max_attempts: 3
+  backoff_seconds: 0.5
+  backoff_multiplier: 2.0
+  max_backoff_seconds: 5.0
+  retry_on_timeouts: true
+  retry_on_connection_errors: true

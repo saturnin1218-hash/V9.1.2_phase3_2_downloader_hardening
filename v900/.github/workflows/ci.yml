@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Sync dependencies
+        run: uv sync --locked --extra yaml --extra parquet --extra polars --extra dev
+
+      - name: Check lockfile consistency
+        run: uv lock --check
+
+      - name: Ruff
+        run: >-
+          uv run ruff check .
+          --exclude .venv,.ruff_cache,binance_quant_builder/legacy/v7_9_4_compat.py
+          --ignore E501,I001,F401,E402
+
+      - name: Validate example config
+        run: uv run binance-quant-builder validate-config --config config.example.yaml
+
+      - name: Pytest
+        run: uv run pytest -q --cov=binance_quant_builder --cov-report=term-missing
+
+      - name: Build package
+        run: uv run python -m build
+
+      - name: Quality smoke check
+        run: uv run python scripts/quality_check.py

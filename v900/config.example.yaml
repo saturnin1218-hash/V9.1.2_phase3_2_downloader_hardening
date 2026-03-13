@@ -1,0 +1,87 @@
+run:
+  symbol: BTCUSDT
+  market: futures_um
+  freq: 1h
+  start: 2024-01-01
+  end: 2024-01-03
+  out_dir: ./output
+  use_legacy_pipeline: false
+  native_mode: full
+  native_plan_filename: native_execution_plan.json
+  native_raw_trades_filename: native_raw_trades.csv
+  native_funding_filename: native_funding.csv
+  native_metrics_filename: native_metrics.csv
+  native_liquidations_filename: native_liquidations.csv
+  native_merged_filename: native_merged.csv
+  native_features_filename: native_features.csv
+  native_export_filename: native_export.csv
+  native_input_path: null
+  native_export_format: csv
+  native_download_limit: 1000
+  native_include_funding: true
+  native_include_metrics: true
+  native_include_liquidations: false
+  native_merge_tolerance: 6h
+  native_metrics_period: 1h
+  native_acceleration_backend: auto
+
+parallel:
+  enabled: true
+  backend: process
+  workers: 4
+
+rate_limit:
+  backend: sqlite
+  max_per_min: 60
+  sqlite_timeout: 60.0
+  sqlite_path: ./output/api_rate_limit.sqlite3
+  redis_url: redis://localhost:6379/0
+
+features:
+  emit_ml_ready_normalized: true
+  ml_normalization_mode: rolling_zscore
+  ml_normalization_window: 252
+  log_per_symbol: true
+  nan_report: true
+  triple_barrier_horizon: 24
+  triple_barrier_pt: 0.02
+  triple_barrier_sl: 0.02
+  large_trade_quantile: 0.95
+  rolling_window: 1000
+
+quality:
+  max_na_ratio_critical: 0.15
+  min_rows: 2
+  min_label_classes: 2
+  allow_degraded_export: false
+
+legacy_bridge:
+  cache_dir: ./binance_cache
+  chunksize: 250000
+  engine: c
+  metrics_merge: asof
+  max_metrics_staleness: 6h
+  max_download_workers: 8
+  batch_size: 1
+  api_rate_limit_jitter: 0.10
+  skip_delisted: false
+  skip_partial_listing: false
+  force_redownload: false
+  force_reprocess: false
+  dropna_final: false
+  downcast_float32: false
+  gzip_csv: false
+  keep_extracted: false
+  include_offline_labels: false
+  include_oi_5m_api: false
+  include_liquidations: false
+  allow_target_columns_on_export: false
+
+
+retry:
+  max_attempts: 3
+  backoff_seconds: 0.5
+  backoff_multiplier: 2.0
+  max_backoff_seconds: 5.0
+  retry_on_timeouts: true
+  retry_on_connection_errors: true

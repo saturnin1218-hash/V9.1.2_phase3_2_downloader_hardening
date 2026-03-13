@@ -1,0 +1,16 @@
+run:
+  use_legacy_pipeline: false
+  native_mode: feature-only
+parallel:
+  enabled: false
+features:
+  nan_report: true
+
+
+retry:
+  max_attempts: 3
+  backoff_seconds: 0.5
+  backoff_multiplier: 2.0
+  max_backoff_seconds: 5.0
+  retry_on_timeouts: true
+  retry_on_connection_errors: true

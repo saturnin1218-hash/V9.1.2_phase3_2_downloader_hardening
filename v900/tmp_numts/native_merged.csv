@@ -1,0 +1,2 @@
+timestamp,open,high,low,close,trade_count,quantity_sum,notional_sum,buy_notional,sell_notional,large_buy_notional,large_sell_notional,large_trade_count,large_trade_share,signed_notional_imbalance,large_signed_imbalance,amihud_24,vpin_50,notional_z_96,return_1,close_z_96,label_tb
+1970-01-01 00:28:00+00:00,100,102,100,102,3,3,303,202.0,101.0,102.0,0.0,1.0,0.3333333333333333,0.3333333333333333,1.0,,,,,,0.0
